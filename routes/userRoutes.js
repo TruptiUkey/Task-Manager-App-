@@ -91,4 +91,14 @@ router.put('/profile/password',jwtAuthMiddleware,async (req,res)=>{
     }
 })
 
+router.post('/logout', jwtAuthMiddleware, async (req, res) => {
+    try {
+      await User.updateOne({ _id: req.user.id }, { $set: { token: null } });
+      res.status(200).send('Logged out successfully');
+    } catch (err) {
+      res.status(500).send('Internal Server Error');
+    }
+  });
+  
+
 module.exports = router;
